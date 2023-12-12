@@ -1,0 +1,6 @@
+[submodule ".frontend"]
+	path = .frontend
+	url = https://github.com/shampiniony/devrel-community-fe.git
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/shampiniony/devrel-community-fe.git
