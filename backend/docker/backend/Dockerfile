@@ -15,6 +15,6 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 RUN pip install gunicorn
 
-COPY /backend .
+COPY . .
 
 # CMD ["gunicorn","-b","0.0.0.0:8000","backend.wsgi:application"]

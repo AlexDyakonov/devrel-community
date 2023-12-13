@@ -5,20 +5,18 @@ services:
   backend:
     restart: unless-stopped
     build:
-      dockerfile: ./docker/backend/Dockerfile
       context: .
-    image: backend:latest
+      dockerfile: ./docker/backend/Dockerfile
     container_name: backend
     env_file:
       - .env
-    # ports:
+      # ports:
       # - "8000:8000"
     command: >
       bash -c "python manage.py collectstatic --noinput && python manage.py migrate && gunicorn -b 0.0.0.0:8000 backend.wsgi:application"
     volumes:
       - ./media:/backend/media:consistent
       - ./static:/backend/static:consistent
-      - ./backend/backend/settings.py:/backend/backend/settings.py:consistent
     depends_on:
       - database
   database:
@@ -33,6 +31,7 @@ services:
       - "5432:5432"
   adminer:
     image: adminer
+    container_name: adminer
     restart: always
     ports:
       - '1000:8080'
@@ -43,8 +42,7 @@ services:
     build:
       dockerfile: ./Dockerfile
       context: ./docker/nginx/
-    container_name: nginx_backend
-    image: nginx_backend
+    container_name: nginx
     volumes:
       - ./static:/backend/static:consistent
       - ./media:/backend/media:consistent
