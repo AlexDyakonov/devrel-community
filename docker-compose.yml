@@ -1,1 +1,68 @@
 # PROD DOCKER
+
+version: '2'
+
+services:
+  backend:
+    container_name: backend
+    restart: unless-stopped
+    build:
+      context: ./backend
+      dockerfile: ./docker/backend/Dockerfile
+    env_file:
+      - .env.prod
+    volumes:
+      - ./media:/backend/media:consistent
+      - ./static:/backend/static:consistent
+    depends_on:
+      - database
+  database:
+    container_name: database
+    restart: unless-stopped
+    image: postgres:15
+    volumes:
+      - ~/.pg/pg_data/devrel_hack:/var/lib/postgresql/data
+    env_file:
+      - .env.prod
+    ports:
+      - "5432:5432"
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: always
+    env_file:
+      - .env.prod
+    ports:
+      - '1000:8080'
+    depends_on:
+      - database
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: ../docker/frontend/Dockerfile
+    volumes:
+      - ./frontend/dist:/frontend/dist:consistent
+    depends_on:
+      - backend
+    restart: no
+    env_file:
+      - .env.prod
+  nginx:
+    container_name: nginx
+    restart: unless-stopped
+    build:
+      context: ./docker/nginx/
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./backend/static:/backend/static:consistent
+      - ./backend/media:/backend/media:consistent
+      - ./frontend/dist:/frontend/dist:consistent
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    depends_on:
+      - backend
+      - frontend
+    env_file:
+      - .env.prod
+    ports:
+      - "${NGINX_EXTERNAL_PORT:-80}:80"
