@@ -17,4 +17,6 @@ RUN pip install gunicorn
 
 COPY . .
 
-# CMD ["gunicorn","-b","0.0.0.0:8000","backend.wsgi:application"]
+RUN ["chmod", "+x", "./docker/backend/run.sh"]
+
+ENTRYPOINT ["./docker/backend/run.sh"]
