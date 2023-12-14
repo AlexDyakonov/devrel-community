@@ -130,12 +130,9 @@ REST_FRAMEWORK = {
 # DJOSER SETTINGS
 
 DJOSER = {
-    # ...
     'SERIALIZERS': {
-        'user_list': 'users.serializers.CustomUserSerializer',
-    },
-    'USER': {
-        'VIEW_SET': 'users.views.CustomUserList',
+        'user': 'users.serializers.CustomUserSerializer',
+        'user_create': 'users.serializers.CustomUserSerializer',
     },
 }
 
