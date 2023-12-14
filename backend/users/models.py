@@ -19,9 +19,8 @@ class CustomUser(AbstractUser):
     birth_date      = models.DateField('Дата рождения', null=True, blank=True)
 
     # Обязательные поля
-
-    first_name = models.CharField(max_length=30, blank=False)
-    last_name = models.CharField(max_length=30, blank=False)
+    first_name      = models.CharField(max_length=30, blank=False)
+    last_name       = models.CharField(max_length=30, blank=False)
 
     def __str__(self):
         return self.username
