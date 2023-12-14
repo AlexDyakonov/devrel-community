@@ -12,8 +12,8 @@ services:
     env_file:
       - .env.prod
     volumes:
-      - ./media:/backend/media:consistent
-      - ./static:/backend/static:consistent
+      - ./backend/media:/backend/media:consistent
+      - ./backend/static:/backend/static:consistent
     depends_on:
       - database
   database:
