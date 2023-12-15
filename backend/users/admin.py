@@ -3,10 +3,12 @@ from .models import Role, UserProfile, User
 
 admin.site.register(User)
 
+
 class RoleAdmin(admin.ModelAdmin):
     list_display = ('name',)
     list_filter = ('name',)
     search_fields = ('name',)
+
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'get_roles')
@@ -17,6 +19,7 @@ class UserProfileAdmin(admin.ModelAdmin):
         return ", ".join([role.name for role in obj.roles.all()])
 
     get_roles.short_description = 'Roles'
+
 
 admin.site.register(Role, RoleAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)

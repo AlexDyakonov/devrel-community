@@ -18,7 +18,6 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from users.views import UserList
 
-
 # Docs
 from django.urls import re_path
 from rest_framework import permissions
@@ -26,16 +25,15 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 schema_view = get_schema_view(
-   openapi.Info(
-      title="Djoser API",
-      default_version='v1',
-      description="API for devrel hackathon",
-      license=openapi.License(name="MIT License"),
-   ),
-   public=True,
-   permission_classes=(permissions.AllowAny,),
+    openapi.Info(
+        title="Djoser API",
+        default_version='v1',
+        description="API for devrel hackathon",
+        license=openapi.License(name="MIT License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
 )
-
 
 urlpatterns = [
     # Docs

@@ -1,9 +1,9 @@
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
 from .services import get_path_upload_avatar, validate_size_image
 from django.db import models
 from backend import settings
+
 
 # Create your models here.
 class User(AbstractUser):
@@ -25,11 +25,13 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+
 class Role(models.Model):
     name = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
         return self.name
+
 
 class UserProfile(models.Model):
     user    = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

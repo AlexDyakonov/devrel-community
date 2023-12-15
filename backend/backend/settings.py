@@ -44,7 +44,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOW_CREDENTIALS = False
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -118,7 +117,6 @@ DATABASES = {
     }
 }
 
-
 # Auth settings REST
 
 REST_FRAMEWORK = {
@@ -129,7 +127,6 @@ REST_FRAMEWORK = {
     ),
 }
 
-
 # DJOSER SETTINGS
 
 DJOSER = {
@@ -138,7 +135,6 @@ DJOSER = {
         'user_create': 'users.serializers.UserSerializer',
     },
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -182,17 +178,14 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
 # Users
 
 AUTH_USER_MODEL = 'users.User'
-
 
 # Logging
 
