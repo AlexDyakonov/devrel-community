@@ -34,9 +34,11 @@ CSRF_TRUSTED_ORIGINS = []
 if scrf_subdomain := os.getenv("SCRF_SUBDOMAIN"):
     CSRF_TRUSTED_ORIGINS += [f'http://{scrf_subdomain}', f'https://{scrf_subdomain}']
 
-CORS_ALLOW_HEADERS = ['*']
-
 ALLOWED_HOSTS = ['*']
+
+# CORS_HEADERS
+
+CORS_ALLOW_HEADERS = ['*']
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -58,6 +60,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     "corsheaders",
     "djoser",
+    'drf_yasg',
 
     # Custom
     "api",
@@ -179,6 +182,7 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -186,7 +190,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # Users
-
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
