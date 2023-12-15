@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Role, UserProfile, CustomUser
+from .models import Role, UserProfile, User
 
-admin.site.register(CustomUser)
+admin.site.register(User)
 
 class RoleAdmin(admin.ModelAdmin):
     list_display = ('name',)

@@ -134,8 +134,8 @@ REST_FRAMEWORK = {
 
 DJOSER = {
     'SERIALIZERS': {
-        'user': 'users.serializers.CustomUserSerializer',
-        'user_create': 'users.serializers.CustomUserSerializer',
+        'user': 'users.serializers.UserSerializer',
+        'user_create': 'users.serializers.UserSerializer',
     },
 }
 
@@ -191,7 +191,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Users
 
-AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'users.User'
 
 
 # Logging

@@ -6,7 +6,7 @@ from django.db import models
 from backend import settings
 
 # Create your models here.
-class CustomUser(AbstractUser):
+class User(AbstractUser):
     middle_name     = models.CharField(max_length=100, blank=True, null=True)
     bio             = models.TextField(max_length=2000, blank=True, null=True)
     avatar          = models.ImageField(
