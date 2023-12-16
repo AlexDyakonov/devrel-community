@@ -11,6 +11,8 @@ services:
       dockerfile: ./docker/backend/Dockerfile
     env_file:
       - .env.prod
+    command:
+      - ./docker/backend/run.sh
     volumes:
       - ./backend/media:/backend/media:consistent
       - ./backend/static:/backend/static:consistent
