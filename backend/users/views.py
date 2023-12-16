@@ -15,13 +15,16 @@ class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+
 class SpecializationList(generics.ListAPIView):
     queryset = Specialization.objects.all()
     serializer_class = SpecializationSerializer
+
 
 class SkillList(generics.ListAPIView):
     queryset = Skill.objects.all()
@@ -29,7 +32,9 @@ class SkillList(generics.ListAPIView):
 
 
 class UserLoginSerializer(serializers.Serializer):
-    email = serializers.EmailField()
+    email = serializers.EmailField(required=True)
+    backref = serializers.CharField(default="http://0.0.0.0/")
+
 
 class UserLoginView(generics.CreateAPIView):
     serializer_class = UserLoginSerializer
@@ -38,12 +43,13 @@ class UserLoginView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         email = serializer.validated_data.get('email')
+        backref = serializer.validated_data.get('backref')
 
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-        
+
         token, created = Token.objects.get_or_create(user=user)
-        send_token_email(user, '0.0.0.0/event/id/?'+ token.key)
+        send_token_email(user, backref + "?token=" + token.key)
         return Response({'token': token.key})
