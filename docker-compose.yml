@@ -81,7 +81,7 @@ services:
     container_name: worker
     restart: always
     build:
-      context: .
+      context: ./backend
       dockerfile: ./backend/docker/backend/Dockerfile
     command: celery -A mailer worker -l info
     volumes:
