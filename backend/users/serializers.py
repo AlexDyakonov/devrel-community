@@ -30,8 +30,8 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         ref_name = 'CustomUser'
         fields = (
-            'id', 'email', 'first_name', 'last_name', 'middle_name', 'phone_number', 'city', 'sex', 'birth_date',
-            'grade', 'work_experience', 'is_devrel', 'password', 'specializations', 'skills'
+            'id', 'email', 'first_name', 'last_name', 'middle_name', 'phone_number', 'telegram_id', 'city', 'sex', 'birth_date',
+            'grade', 'work_experience', 'password', 'specializations', 'skills'
         )
 
     def create(self, validated_data):
