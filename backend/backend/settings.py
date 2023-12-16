@@ -67,6 +67,8 @@ INSTALLED_APPS = [
     # Custom
     "api",
     "users",
+    "mailer",
+    'refflink'
 ]
 
 MIDDLEWARE = [

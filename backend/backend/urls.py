@@ -45,6 +45,7 @@ urlpatterns = [
     path("api/admin/", admin.site.urls),
     path('api/', include('api.urls')),
     path('api/mailer/', include('mailer.urls')),
+    path('api/ref/', include('refflink.urls')),
 
     path('api/users/', include('users.urls')),
 ]
