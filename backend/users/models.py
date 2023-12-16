@@ -7,9 +7,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import BaseUserManager
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from utils.telethon.telegram_bot import TelegramBotClient, get_user_id_sync
-
-telegram_bot = TelegramBotClient()
+from mailer.tasks import get_user_id
 
 # Create your models here.
 class Specialization(models.Model):
@@ -75,6 +73,7 @@ class User(AbstractUser):
     last_name       = models.CharField('Фамилия', max_length=30, blank=True)
     middle_name     = models.CharField('Отчество', max_length=100, blank=True, null=True)
     phone_number    = models.CharField('Номер телефона', max_length=15, blank = True, null=True)
+    telegram_url    = models.CharField('URL тг', max_length=100, blank=True, null=True)
     telegram_id     = models.CharField('Id тг', max_length=32, blank=True, null=True)
     city            = models.TextField('Город', max_length=2000, blank=True, null=True)
     sex             = models.CharField('Пол', max_length=10, choices=[('male', 'Male'), ('female', 'Female'), ('other', 'Other')], blank=True, null=True)
@@ -102,6 +101,9 @@ def set_random_password(sender, instance : User, created, **kwargs):
 
 @receiver(post_save, sender=User)
 def set_telegram_id(sender, instance : User, created, **kwargs):
-    if created and instance.telegram_id!=None:
-        instance.telegram_id = get_user_id_sync(telegram_bot, instance.telegram_id)
-        instance.save()
+    if created and instance.telegram_url!=None:
+        try:
+            instance.telegram_id = get_user_id(instance.telegram_url)
+            instance.save()
+        except Exception as e:
+            print("Telegram id error:" + str(e))

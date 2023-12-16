@@ -4,6 +4,7 @@ from .serializers import MailSerializer
 from django.conf import settings
 from bs4 import BeautifulSoup
 from django.template.loader import render_to_string
+from utils.telethon.telegram_bot import get_user_id_sync, send_msg_sync
 
 @shared_task
 def bar():
@@ -24,3 +25,17 @@ def send_mailing(emails: list, mail: dict):
         emails,
         html_message=html_message,
     )
+
+
+@shared_task
+def send_tg_message(tg_ids: list, message: str):
+    for tg_id in tg_ids:
+        print("Попытка отправить сообщение пользователю:" + str(tg_id) + " с контентом *** " + message + " ***")
+        try:
+            send_msg_sync(tg_id, msg=message)
+        except:
+            print("Сообщение пользователю: " + str(tg_id) + " не доставлено")
+
+@shared_task
+def get_user_id(tg_url):
+    return get_user_id_sync(tg_url)

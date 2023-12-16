@@ -11,3 +11,11 @@ class MailSerializer(serializers.Serializer):
 class MailingSerializer(serializers.Serializer):
     emails = serializers.ListField(child=serializers.EmailField(), required=True)
     mail = MailSerializer(required=True)
+
+
+class TgIdListSerializer(serializers.Serializer):
+    tg_ids = serializers.ListField(child=serializers.IntegerField(), required=True)
+
+class TgMessageSerializer(serializers.Serializer):
+    tg_ids = serializers.ListField(child=serializers.IntegerField(), required=True)
+    message = serializers.CharField(required=True)
