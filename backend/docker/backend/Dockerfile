@@ -18,5 +18,3 @@ RUN pip install gunicorn
 COPY . .
 
 RUN ["chmod", "+x", "./docker/backend/run.sh"]
-
-ENTRYPOINT ["./docker/backend/run.sh"]

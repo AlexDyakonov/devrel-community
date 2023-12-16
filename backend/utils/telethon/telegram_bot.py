@@ -11,9 +11,10 @@ logging.basicConfig(level=logging.INFO)
 
 class TelegramBotClient:
     def __init__(self):
-        api_id = int(os.getenv('TELETHON_API_ID'))
-        api_hash = os.getenv('TELETHON_API_HASH')
-        self.client = TelegramClient('anon', api_id, api_hash)
+        # api_id = int(os.getenv('TELETHON_API_ID'))
+        # api_hash = os.getenv('TELETHON_API_HASH')
+        # self.client = TelegramClient('anon', api_id, api_hash)
+        pass
 
     async def get_user_id(self, user_name: str):
         try:

@@ -61,6 +61,9 @@ INSTALLED_APPS = [
     "corsheaders",
     'drf_yasg',
 
+    # Celery
+    "django_celery_results",
+
     # Custom
     "api",
     "users",
@@ -195,3 +198,18 @@ LOGGING = {
         'level': 'DEBUG',
     },
 }
+
+# CELERY
+
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = 'django-db'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': os.getenv('CELERY_BROKER_URL'),
+    }
+}
+
+CELERY_CACHE_BACKEND = 'default'
+CELERY_IMPORTS = ('mailer.tasks',)
