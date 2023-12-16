@@ -11,6 +11,8 @@ def bar():
 
 @shared_task
 def send_mailing(emails: list, mail: dict):
+    print(emails)
+    print(mail)
     send_mail(
         mail.get("subject"),
         mail.get("message"),

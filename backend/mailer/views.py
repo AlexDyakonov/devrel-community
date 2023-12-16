@@ -22,8 +22,6 @@ class MailingView(CreateAPIView):
         if serializer.is_valid():
             emails: list = serializer.validated_data.get('emails')
             mail: MailSerializer = serializer.validated_data.get('mail')
-            print(emails)
-            print(mail)
 
             send_mailing.delay(emails, mail)
 
