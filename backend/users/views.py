@@ -33,7 +33,7 @@ class SkillList(generics.ListAPIView):
 
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
-    backref = serializers.CharField(default="http://0.0.0.0/")
+    redirect = serializers.CharField(default="http://0.0.0.0/")
 
 
 class UserLoginView(generics.CreateAPIView):
@@ -43,7 +43,7 @@ class UserLoginView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         email = serializer.validated_data.get('email')
-        backref = serializer.validated_data.get('backref')
+        redirect = serializer.validated_data.get('redirect')
 
         try:
             user = User.objects.get(email=email)
@@ -51,5 +51,5 @@ class UserLoginView(generics.CreateAPIView):
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
         token, created = Token.objects.get_or_create(user=user)
-        send_token_email(user, backref + "?token=" + token.key)
+        send_token_email(user, redirect + "?token=" + token.key)
         return Response({'token': token.key})
