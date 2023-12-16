@@ -1,7 +1,6 @@
 import os
 from dotenv import load_dotenv
 from telethon import TelegramClient
-import asyncio
 import logging
 
 load_dotenv()
@@ -33,9 +32,3 @@ async def send_msg(user_id, msg):
         await client.disconnect()
     except Exception as e:
         logging.error(f"Error in send_msg to user {user_id}: {e}")
-
-def get_user_id_sync(user_link):
-    return asyncio.run(get_user_id(user_link))
-
-def send_msg_sync(user_link, msg): 
-    return asyncio.run(send_msg(user_link, msg))

@@ -1,13 +1,12 @@
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import FileExtensionValidator
-from .services import get_path_upload_avatar, validate_size_image
 from django.db import models
-from backend import settings
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import BaseUserManager
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from mailer.tasks import get_user_id
+from mailer.tasks import get_telegram_id
+from celery.result import AsyncResult
+from time import sleep
 
 # Create your models here.
 class Specialization(models.Model):
@@ -100,10 +99,16 @@ def set_random_password(sender, instance : User, created, **kwargs):
         instance.save(update_fields=['password'])
 
 @receiver(post_save, sender=User)
-def set_telegram_id(sender, instance : User, created, **kwargs):
-    if created and instance.telegram_url!=None:
-        try:
-            instance.telegram_id = get_user_id(instance.telegram_url)
-            instance.save()
-        except Exception as e:
-            print("Telegram id error:" + str(e))
+def set_telegram_id(sender, instance: User, created, **kwargs):
+    if created and instance.telegram_url:
+        task = get_telegram_id.delay(instance.telegram_url)
+        update_user_after_task(task.id, instance.id)
+
+def update_user_after_task(task_id, user_id):
+    result = AsyncResult(task_id)
+    while not result.ready():
+        sleep(3)
+    telegram_id = result.get()
+    if telegram_id:
+        User.objects.filter(id=user_id).update(telegram_id=telegram_id)
+
