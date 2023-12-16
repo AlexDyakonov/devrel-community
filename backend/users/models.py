@@ -7,7 +7,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import BaseUserManager
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from utils.telegram_bot import TelegramBotClient, get_user_id_sync
+from utils.telethon.telegram_bot import TelegramBotClient, get_user_id_sync
 
 telegram_bot = TelegramBotClient()
 
