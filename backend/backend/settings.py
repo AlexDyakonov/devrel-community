@@ -217,3 +217,8 @@ CACHES = {
 
 CELERY_CACHE_BACKEND = 'default'
 CELERY_IMPORTS = ('mailer.tasks',)
+
+# YAGPT
+
+YAGPT_REPO = os.getenv('YAGPT_REPO') or None
+YAGPT_API_KEY = os.getenv('YAGPT_API_KEY') or None

@@ -1,11 +1,11 @@
 from rest_framework import serializers
 from .models import User, Specialization, Skill
 
-    
+
 class SpecializationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Specialization
-        fields = '__all__' 
+        fields = '__all__'
 
 
 class SkillSerializer(serializers.ModelSerializer):
@@ -30,7 +30,8 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         ref_name = 'CustomUser'
         fields = (
-            'id', 'email', 'first_name', 'last_name', 'middle_name', 'phone_number', 'telegram_url', 'telegram_id', 'city', 'sex', 'birth_date',
+            'id', 'email', 'first_name', 'last_name', 'middle_name', 'phone_number', 'telegram_url', 'telegram_id',
+            'city', 'sex', 'birth_date',
             'grade', 'work_experience', 'password', 'specializations', 'skills'
         )
 
@@ -40,11 +41,11 @@ class UserSerializer(serializers.ModelSerializer):
         skills = validated_data.pop('skills', [])
 
         instance = self.Meta.model(**validated_data)
-        
+
         if password is not None:
             instance.set_password(password)
         instance.save()
-        
+
         instance.specializations.set(specializations)
         instance.skills.set(skills)
 

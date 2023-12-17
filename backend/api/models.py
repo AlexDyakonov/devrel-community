@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import User
 from django.core.validators import FileExtensionValidator
+from users.models import User
 import json
 
 
