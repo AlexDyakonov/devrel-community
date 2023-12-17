@@ -21,12 +21,12 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
 
 
-class SpecializationList(generics.ListAPIView):
+class SpecializationList(generics.ListCreateAPIView):
     queryset = Specialization.objects.all()
     serializer_class = SpecializationSerializer
 
 
-class SkillList(generics.ListAPIView):
+class SkillList(generics.ListCreateAPIView):
     queryset = Skill.objects.all()
     serializer_class = SkillSerializer
 
