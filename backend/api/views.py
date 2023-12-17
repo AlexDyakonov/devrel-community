@@ -90,3 +90,15 @@ class ParticipateView(CreateAPIView):
             event.save()
             return Response()
         return status.HTTP_400_BAD_REQUEST
+
+class EventFormDataAPIView(APIView):
+    def get(self, request, event_id, format=None):
+        try:
+            event = Event.objects.get(pk=event_id)
+        except Event.DoesNotExist:
+            return Response({'error': 'Event not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        form_fields = FormFields.objects.filter(event=event)
+        data = [field.get_data() for field in form_fields]
+        
+        return Response(data)

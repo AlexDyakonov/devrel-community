@@ -37,7 +37,7 @@ class Event(models.Model):
     location            = models.CharField(max_length=255, null=True, blank=True)
     start_time          = models.DateTimeField(null=False, blank=False)
     end_time            = models.DateTimeField(null=False, blank=False)
-    participants        = models.ManyToManyField(User, related_name='events_participated', blank=True)
+    participants        = models.ManyToManyField(User, related_name='events_participated', blank=True, null=True)
     social_media_link   = models.URLField(blank=True)
 
 
@@ -54,10 +54,15 @@ class FormFields(models.Model):
     data = models.JSONField()
 
     def set_data(self, data_dict):
-        self.data = json.dumps(data_dict)
+        if isinstance(data_dict, dict):
+            self.data = json.dumps(data_dict)
+        else:
+            self.data = data_dict
 
     def get_data(self):
-        return json.loads(self.data)
+        if isinstance(self.data, str):
+            return json.loads(self.data)
+        return self.data
 
     def __str__(self):
         return f"Fields for Event: {self.event.title}"
