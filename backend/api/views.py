@@ -4,13 +4,15 @@ from .models import Event, FormFields
 from .serializers import EventSerializer, FormFieldsSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
-from django.contrib.auth.models import User
+from users.models import User
 from rest_framework import serializers
+from rest_framework.views import APIView
 from users.serializers import UserSerializer
 from rest_framework.generics import CreateAPIView
 from rest_framework.exceptions import NotFound
 from rest_framework import status
 from utils.yagpt.yagpt import send_message
+from django.shortcuts import get_object_or_404
 
 
 # Create your views here.
@@ -68,4 +70,23 @@ class AskGPTView(CreateAPIView):
             text = serializer.validated_data.get('message')
             print(text)
             return Response(send_message(text))
+        return status.HTTP_400_BAD_REQUEST
+
+
+class ParticipationSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField()
+
+
+class ParticipateView(CreateAPIView):
+    serializer_class = ParticipationSerializer
+
+    @staticmethod
+    def post(request, pk, *args, **kwargs):
+        event: Event = get_object_or_404(Event, pk=pk)
+        serializer = ParticipationSerializer(data=request.data)
+        if serializer.is_valid():
+            user = get_object_or_404(User, pk=serializer.validated_data.get('user_id'))
+            event.participants.add(user)
+            event.save()
+            return Response()
         return status.HTTP_400_BAD_REQUEST

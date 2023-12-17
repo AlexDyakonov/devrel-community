@@ -49,7 +49,7 @@ class UserManager(BaseUserManager):
             raise ValueError('Superuser must have is_superuser=True.')
 
         return self._create_user(email, password, **extra_fields)
-    
+
 
 class User(AbstractUser):
     GRADE_CHOICES = (
@@ -82,7 +82,7 @@ class User(AbstractUser):
     is_devrel       = models.BooleanField('DevRel', default=False)
     specializations = models.ManyToManyField(Specialization, related_name='users', blank=True, verbose_name='Специализации')
     skills = models.ManyToManyField(Skill, related_name='users', blank=True, verbose_name='Навыки')
-
+    events = models.ManyToManyField('api.Event', related_name='events_participated', blank=True, verbose_name='Мероприятия')
 
     objects = UserManager()
     USERNAME_FIELD = 'email'
@@ -90,7 +90,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
-    
+
 @receiver(post_save, sender=User)
 def set_random_password(sender, instance : User, created, **kwargs):
     if created and not instance.is_superuser:
