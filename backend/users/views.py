@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate
 from utils.email.email_utils import send_token_email
-
+from rest_framework.parsers import JSONParser
 
 # Create your views here.
 class UserList(generics.ListCreateAPIView):
@@ -53,3 +53,15 @@ class UserLoginView(generics.CreateAPIView):
         token, created = Token.objects.get_or_create(user=user)
         send_token_email(user, redirect + "?token=" + token.key)
         return Response({'token': token.key})
+
+
+class UploadUsers(APIView):
+    parser_classes = [JSONParser]
+
+    def post(self, request):
+        users_data = request.data
+        serializer = UserSerializer(data=users_data, many=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

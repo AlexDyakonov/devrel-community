@@ -100,7 +100,7 @@ def set_random_password(sender, instance : User, created, **kwargs):
 
 @receiver(post_save, sender=User)
 def set_telegram_id(sender, instance: User, created, **kwargs):
-    if created and instance.telegram_url:
+    if created and instance.telegram_url and (not instance.telegram_id or instance.telegram_id == ""):
         task = get_telegram_id.delay(instance.telegram_url)
         update_user_after_task(task.id, instance.id)
 
