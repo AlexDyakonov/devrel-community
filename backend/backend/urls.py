@@ -48,4 +48,5 @@ urlpatterns = [
     path('api/ref/', include('refflink.urls')),
 
     path('api/users/', include('users.urls')),
+    path('api/analitics/', include('analitics.urls')),
 ]

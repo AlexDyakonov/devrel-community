@@ -1,12 +1,9 @@
 from celery import shared_task
 from django.core.mail import send_mail
-from .serializers import MailSerializer
 from django.conf import settings
 from bs4 import BeautifulSoup
-from django.template.loader import render_to_string
 from utils.telethon.telegram_bot import get_user_id, send_msg
 import asyncio
-from django.contrib.auth import get_user_model
 import logging
 
 @shared_task

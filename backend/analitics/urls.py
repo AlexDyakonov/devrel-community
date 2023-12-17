@@ -1,0 +1,10 @@
+from django.urls import include, path, re_path
+from .views import SourceListView, SourceUsersListView, SourceDetailView, SourceUsersDetailView
+
+
+urlpatterns = [
+    path('sources/', SourceListView.as_view(), name='source-list'),
+    path('source-users/', SourceUsersListView.as_view(), name='source-users-list'),
+    path('sources/<int:pk>/', SourceDetailView.as_view(), name='source-detail'),
+    path('source-users/<int:pk>/', SourceUsersDetailView.as_view(), name='source-users-detail'),
+]
