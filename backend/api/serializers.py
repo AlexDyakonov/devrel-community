@@ -5,7 +5,7 @@ from users.models import User
 
 class EventSerializer(serializers.ModelSerializer):
     banner = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
-    participants = UserSerializer(read_only=False, many=True)
+    participants = UserSerializer(read_only=True, many=True)
 
     class Meta:
         model = Event
