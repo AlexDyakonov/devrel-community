@@ -11,4 +11,3 @@ urlpatterns = [
     path('user-by-token/', UserByTokenAPIView.as_view(), name='user-by-token'),
     path('ask-gpt/', AskGPTView.as_view(), name='ask-gpt')
 ]
-]
