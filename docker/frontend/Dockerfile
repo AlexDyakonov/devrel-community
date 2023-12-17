@@ -3,7 +3,5 @@ WORKDIR /frontend
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build
 
-FROM nginx:alpine
-COPY --from=build-stage /frontend/dist /usr/share/nginx/html
+CMD ["npm", "run", "build", "--verbose"]
