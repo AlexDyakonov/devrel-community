@@ -61,6 +61,7 @@ services:
       - ./backend/media:/backend/media:consistent
       - ./frontend/dist:/frontend/dist:consistent
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./frontend/dist:/usr/share/nginx/html:ro
     depends_on:
       - backend
       - frontend
