@@ -4,7 +4,7 @@ from telethon.tl.functions.channels import JoinChannelRequest
 from dotenv import load_dotenv
 from telethon import TelegramClient
 import logging
-import json
+import asyncio
 import os
 
 load_dotenv()
@@ -52,6 +52,26 @@ async def send_msg(user_id, msg):
         await client.disconnect()
     except Exception as e:
         logging.error(f"Error in send_msg to user {user_id}: {e}")
+
+
+@log_first_call
+async def send_bulk_messages(user_ids, message):
+    client = TelegramClient('anon', api_id, api_hash)
+    await client.start()
+
+    for user_id in user_ids:
+        try:
+            print("Попытка отправить сообщение пользователю:" + str(user_id))
+            await client.send_message(user_id, message)
+            await asyncio.sleep(1)
+        except FloodWaitError as e:
+            logging.error(f"Flood wait error for user {user_id}: waiting for {e.seconds} seconds.")
+            await asyncio.sleep(e.seconds)
+        except Exception as e:
+            logging.error(f"Error in sending message to user {user_id}: {e}")
+
+    await client.disconnect()
+
 
 @log_first_call
 async def join_telegram_group(group_url):

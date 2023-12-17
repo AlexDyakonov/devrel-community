@@ -2,7 +2,7 @@ from celery import shared_task
 from django.core.mail import send_mail
 from django.conf import settings
 from bs4 import BeautifulSoup
-from utils.telethon.telegram_bot import get_user_id, send_msg
+from utils.telethon.telegram_bot import get_user_id, send_msg, send_bulk_messages
 import asyncio
 import logging
 
@@ -29,12 +29,7 @@ def send_mailing(emails: list, mail: dict):
 
 @shared_task
 def send_tg_message(tg_ids: list, message: str):
-    for tg_id in tg_ids:
-        print("Попытка отправить сообщение пользователю:" + str(tg_id) + " с контентом *** " + message + " ***")
-        try:
-            asyncio.run(send_msg(tg_id, msg=message))
-        except:
-            print("Сообщение пользователю: " + str(tg_id) + " не доставлено")
+    asyncio.run(send_bulk_messages(tg_ids, message))
 
 
 @shared_task
