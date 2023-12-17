@@ -8,6 +8,7 @@ from django.db.models import Count
 from api.models import Event
 from rest_framework import status
 
+
 class SourceListView(generics.ListCreateAPIView):
     queryset = Source.objects.all()
     serializer_class = SourceSerializer
@@ -16,7 +17,7 @@ class SourceListView(generics.ListCreateAPIView):
         instance = serializer.save()
 
         if instance.type == 'tg':
-            process_and_save_user_data(instance.url) #TODO database is locked, надо фиксить
+            process_and_save_user_data(instance.url)  # TODO database is locked, надо фиксить
 
 
 class SourceUsersListView(generics.ListCreateAPIView):
@@ -33,13 +34,15 @@ class SourceUsersDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = SourceUsers.objects.all()
     serializer_class = SourceUsersSerializer
 
+
 def get_top_cities_with_total():
     top_cities = User.objects.exclude(city__isnull=True).exclude(city='').values('city') \
-                             .annotate(count=Count('city')) \
-                             .order_by('-count')[:10]
+                     .annotate(count=Count('city')) \
+                     .order_by('-count')[:10]
     total_users_with_city = User.objects.exclude(city__isnull=True).exclude(city='').count()
 
     return top_cities, total_users_with_city
+
 
 class TopCitiesAPIView(generics.ListAPIView):
     def get(self, request, format=None):
@@ -101,7 +104,7 @@ class EventStatisticsAPIView(generics.ListAPIView):
     def get(self, request, format=None):
         stats = get_event_statistics()
         return Response(stats)
-    
+
 
 def get_user_events(user_id):
     try:
@@ -113,10 +116,13 @@ def get_user_events(user_id):
 
 
 class UserEventsAPIView(generics.ListAPIView):
+    queryset = Event.objects.all()
+
     def get(self, request, user_id, format=None):
         user_events = get_user_events(user_id)
         if user_events is None:
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
-        events_data = [{'title': event.title, 'event_type': event.event_type, 'start_time': event.start_time, 'end_time': event.end_time} for event in user_events]
+        events_data = [{'title': event.title, 'event_type': event.event_type, 'start_time': event.start_time,
+                        'end_time': event.end_time} for event in user_events]
         return Response(events_data)
